@@ -26,7 +26,12 @@ def index():
     if request.method == 'POST':
         if request.files:
             image = request.files['image']
-            img_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+            img_path = os.path.join(APP_ROOT, 'temp')
+                isExist = os.path.exists(img_path)
+
+                if not isExist:
+                    os.makedirs(img_path)
+                    print("The new directory is created!")
             image.save(img_path)
             prediction = predict_label(img_path)
             return render_template('index.html', uploaded_image=image.filename, prediction=prediction)
